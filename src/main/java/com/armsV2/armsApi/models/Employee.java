@@ -2,9 +2,9 @@ package com.armsV2.armsApi.models;
 
 import lombok.Data;
 
-import javax.management.relation.Role;
+
 import javax.persistence.*;
-import java.util.Set;
+
 
 @Data
 @Entity
