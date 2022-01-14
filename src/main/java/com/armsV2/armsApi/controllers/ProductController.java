@@ -20,9 +20,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("products")
+@RequestMapping("/api/v1/products")
 @Repository
-public class ProductContoller {
+public class ProductController {
 
   private final ProductRepo productRepo;
   private final ProductsService productsService;
