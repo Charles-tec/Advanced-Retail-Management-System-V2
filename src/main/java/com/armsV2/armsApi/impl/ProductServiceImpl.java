@@ -2,6 +2,7 @@ package com.armsV2.armsApi.impl;
 
 
 import com.armsV2.armsApi.dto.LoginResponseDto;
+import com.armsV2.armsApi.dto.ProductResponseDto;
 import com.armsV2.armsApi.exceptions.InvalidLoginException;
 import com.armsV2.armsApi.exceptions.UnexpectedErrorException;
 import com.armsV2.armsApi.models.Product;
@@ -23,9 +24,13 @@ public class ProductServiceImpl implements ProductsService {
     private final ProductRepo productRepo;
 
     @Override
-    public List<Product> getProducts() {
+    public ProductResponseDto getProducts() {
         List<Product> products = productRepo.findAll();
-        return products;
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setStatus(200);
+        productResponseDto.setMessage("Success");
+        productResponseDto.setProduct(products);
+        return productResponseDto;
     }
 }
 
