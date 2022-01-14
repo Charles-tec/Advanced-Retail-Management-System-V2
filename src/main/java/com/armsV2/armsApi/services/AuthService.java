@@ -1,6 +1,7 @@
 package com.armsV2.armsApi.services;
 
 
+import com.armsV2.armsApi.dto.LoginResponseDto;
 import com.armsV2.armsApi.models.Employee;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,6 @@ import javax.validation.constraints.NotNull;
 
 public interface AuthService {
 
-    Employee login(@NotNull String username, @NotNull String password);
+    LoginResponseDto login(String username, String password);
 
 }

@@ -1,16 +1,21 @@
 package com.armsV2.armsApi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 
 import javax.persistence.*;
 
 
+
+@RequiredArgsConstructor
 @Data
 @Entity
 @Table(name = "employees", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username"}),
-
+        @UniqueConstraint(columnNames = {"userName"}),
 })
 
 public class Employee {
@@ -18,105 +23,31 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "firstName")
     private String firstName;
+
+    @Column(name = "lastName")
     private String lastName;
-    private String userName;
+
+    @Column(name = "userName")
+    private String username;
     private String email;
+
+    @JsonIgnore
     private String password;
     private String phone;
     private String address;
     private Enum type;
+
+    @Column(name = "supervisorCode")
     private String supervisorCode;
+
+    @Column(name = "status")
+    private boolean status;
+
+    @Column(name = "isLogged")
     private boolean isLogged;
 
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Enum getType() {
-        return type;
-    }
-
-    public void setType(Enum type) {
-        this.type = type;
-    }
-
-    public String getSupervisorCode() {
-        return supervisorCode;
-    }
-
-    public void setSupervisorCode(String supervisorCode) {
-        this.supervisorCode = supervisorCode;
-    }
-
-    public boolean isLogged() {
-        return isLogged;
-    }
-
-    public void setLogged(boolean logged) {
-        isLogged = logged;
-    }
 
 }

@@ -12,6 +12,4 @@ public class Response {
     private Object data;
     private List<?> dataList;
     private Page<?> pagedList;
-
-
 }
