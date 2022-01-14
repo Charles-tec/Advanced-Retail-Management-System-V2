@@ -1,12 +1,7 @@
 package com.armsV2.armsApi.controllers;
 
-import com.armsV2.armsApi.dto.LoginResponseDto;
-import com.armsV2.armsApi.dto.LoginTo;
 import com.armsV2.armsApi.dto.ProductResponseDto;
-import com.armsV2.armsApi.models.Product;
-import com.armsV2.armsApi.repositories.EmployRepo;
-import com.armsV2.armsApi.repositories.ProductRepo;
-import com.armsV2.armsApi.services.AuthService;
+import com.armsV2.armsApi.dto.SingleProductResponseDto;
 import com.armsV2.armsApi.services.ProductsService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,7 +21,6 @@ import java.util.List;
 @Repository
 public class ProductController {
 
-  private final ProductRepo productRepo;
   private final ProductsService productsService;
 
   @Operation(summary = "Get All products", description = "", tags = "product")
@@ -34,13 +29,13 @@ public class ProductController {
     return ResponseEntity.ok(productsService.getProducts());
   }
 
-  /*@Operation(summary = "Get product price by barcode ", description = "", tags = "product")
-  @GetMapping(path = "/{superVisorCode}", produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<LoginResponseDto> authenticateSuperVisor(@PathVariable String superVisorCode) {
-    return ResponseEntity.ok(authService.authenticateSuperVisor(superVisorCode));
+  @Operation(summary = "Get product price by barcode ", description = "", tags = "product")
+  @GetMapping(path = "/{barcode}", produces = {MediaType.APPLICATION_JSON_VALUE})
+  public ResponseEntity<SingleProductResponseDto> authenticateSuperVisor(@PathVariable String barcode) {
+    return ResponseEntity.ok(productsService.priceCheck(barcode));
   }
 
-   */
+
 
 
 

@@ -1,16 +1,15 @@
 package com.armsV2.armsApi.services;
 
 
-
 import com.armsV2.armsApi.dto.ProductResponseDto;
-import com.armsV2.armsApi.models.Product;
+import com.armsV2.armsApi.dto.SingleProductResponseDto;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 
 public interface ProductsService {
     ProductResponseDto getProducts();
+    SingleProductResponseDto priceCheck(String barcode);
+
 
 }
