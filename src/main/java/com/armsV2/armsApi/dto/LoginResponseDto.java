@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Data
 public class LoginResponseDto {
-    HttpStatus status;
+    Integer status;
     String message;
     Employee employee;
 }

@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidLoginException("User is already logged in", "User is already logged in");
         }
         LoginResponseDto loginResponseDto = new LoginResponseDto();
-        loginResponseDto.setStatus(HttpStatus.valueOf(HttpStatus.OK.value()));
+        loginResponseDto.setStatus(200);
         loginResponseDto.setMessage("Login Successful");
         loginResponseDto.setEmployee(employee);
         return loginResponseDto;
