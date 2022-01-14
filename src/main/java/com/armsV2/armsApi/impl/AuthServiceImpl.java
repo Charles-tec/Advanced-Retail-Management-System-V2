@@ -41,14 +41,40 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidLoginException("User is already logged in", "User is already logged in");
         }
 
-        if(employee.isStatus()){
-            throw new InvalidLoginException("User is already logged in", "User is already logged in");
+        if(!employee.isStatus()){
+            throw new InvalidLoginException("User is not active", "User is not active");
         }
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setStatus(200);
         loginResponseDto.setMessage("Login Successful");
         loginResponseDto.setEmployee(employee);
         return loginResponseDto;
+    }
+
+    @Override
+    public LoginResponseDto authenticateSuperVisor(String superVisorCode) {
+        if (StringUtils.isBlank(superVisorCode)) {
+            throw new UnexpectedErrorException("Provide supervisor code","Provide supervisor code");
+        }
+        var employee = employeeRepository.findBySupervisorCode(superVisorCode);
+        if(employee == null) {
+            throw new InvalidLoginException("Invalid supervisor code", "Invalid supervisor code");
+        }
+        if(!employee.isStatus()){
+            throw new InvalidLoginException("Supervisor is not active", "Supervisor is not active");
+        }
+
+        if(!employee.getSupervisorCode().equals(superVisorCode)) {
+            throw new InvalidLoginException("Invalid supervisor code", "Invalid supervisor code");
+        }
+
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        loginResponseDto.setStatus(200);
+        loginResponseDto.setMessage("Login Successful");
+        loginResponseDto.setEmployee(employee);
+        return loginResponseDto;
+
+
     }
 }
 

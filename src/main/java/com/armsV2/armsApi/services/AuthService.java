@@ -13,4 +13,6 @@ public interface AuthService {
 
     LoginResponseDto login(String username, String password);
 
+    LoginResponseDto authenticateSuperVisor(String superVisorCode);
+
 }
