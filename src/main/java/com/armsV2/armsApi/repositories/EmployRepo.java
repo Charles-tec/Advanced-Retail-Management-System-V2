@@ -10,4 +10,6 @@ public interface EmployRepo extends JpaRepository<Employee, Integer> {
    Employee findByUsername(String username);
 
    Employee findBySupervisorCode(String supervisor);
+
+   Employee findEmployeeById(long Id);
 }

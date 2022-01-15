@@ -12,4 +12,6 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 
     Product findByBarcode(String barcode);
 
+    Product findById(long id);
+
 }
