@@ -65,15 +65,11 @@ public class TransactionServiceImpl implements TransactionService {
         System.out.println("Amount to Be Paid" + totalAmountToBePaid);
 
         totalTransactionAmount = totalAmountToBePaid;
-        if(amountPaid < totalAmountToBePaid ){
-            return false;
-        }
-        return true;
+        return !(amountPaid < totalAmountToBePaid);
     }
 
     public long generateReference(){
-         long unixTime = System.currentTimeMillis() / 1000L;
-         return unixTime;
+        return System.currentTimeMillis() / 1000L;
     }
 }
 
