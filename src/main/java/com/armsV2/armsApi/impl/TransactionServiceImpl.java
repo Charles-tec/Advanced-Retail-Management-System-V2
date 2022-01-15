@@ -61,8 +61,6 @@ public class TransactionServiceImpl implements TransactionService {
             double amountWithQuantities = productSellingPrice.getPrice() * product.getQuantity();
             totalAmountToBePaid += amountWithQuantities;
         }
-        System.out.println("Amount Paid" + amountPaid);
-        System.out.println("Amount to Be Paid" + totalAmountToBePaid);
 
         totalTransactionAmount = totalAmountToBePaid;
         return !(amountPaid < totalAmountToBePaid);
