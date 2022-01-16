@@ -11,4 +11,6 @@ import org.springframework.stereotype.Service;
 public interface TransactionService {
    TransactionResponseDto processUsdTransaction(UsdTransactionRequestDto usdTransactionRequestDto);
 
+   TransactionResponseDto processZwlTransaction(String channel, UsdTransactionRequestDto usdTransactionRequestDto);
+
 }

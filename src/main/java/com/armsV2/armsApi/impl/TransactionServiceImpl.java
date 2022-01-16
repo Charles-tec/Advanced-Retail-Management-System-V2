@@ -27,14 +27,14 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public TransactionResponseDto processUsdTransaction(UsdTransactionRequestDto usdTransactionRequestDto) {
-          var productList = usdTransactionRequestDto.getItems();
+        var productList = usdTransactionRequestDto.getItems();
 
           var employee = employRepo.findEmployeeById(usdTransactionRequestDto.getEmployeeId());
         if(employee == null){
             throw new UnexpectedErrorException("Unknown employee","Unknown employee");
         }
 
-          boolean checkBalance =  inSufficientFundsCheck(usdTransactionRequestDto.getAmountPaid(),usdTransactionRequestDto, "USD");
+          boolean checkBalance =  inSufficientFundsCheck(usdTransactionRequestDto.getAmountPaid(),usdTransactionRequestDto, "USD",1);
           if(!checkBalance){
               throw new UnexpectedErrorException("Insufficient Funds to process this transaction","Insufficient Funds to process this transaction");
           }
@@ -44,6 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
 
           Invoice invoice = new Invoice();
           invoice.setEmployeeId(employee.getId());
+
           invoice.setReference(reference);
           invoice.setCurrency("USD");
           invoice.setVat(0.0);
@@ -78,8 +79,6 @@ public class TransactionServiceImpl implements TransactionService {
                 saleRepo.save(sale);
             }
 
-
-
             TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
             transactionResponseDto.setStatus(200);
             transactionResponseDto.setMessage("Transaction successfully processed");
@@ -91,8 +90,74 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    @Override
+    public TransactionResponseDto processZwlTransaction(String channel, UsdTransactionRequestDto usdTransactionRequestDto) {
+        var productList = usdTransactionRequestDto.getItems();
+        var employee = employRepo.findEmployeeById(usdTransactionRequestDto.getEmployeeId());
+        double rate = rateRepo.findByBaseCurrency("ZWL").getRate();
+        if(employee == null){
+            throw new UnexpectedErrorException("Unknown employee","Unknown employee");
+        }
 
-    public boolean inSufficientFundsCheck(double amountPaid, UsdTransactionRequestDto usdTransactionRequestDto, String currency){
+        if(!channel.equals("ZWL_CASH") && !channel.equals("ZWL_MOBILE") && !channel.equals("ZWL_SWIPE")){
+            throw new UnexpectedErrorException("Channel not supported please provide [ZWL_CASH,ZWL_MOBILE,ZWL_SWIPE] ","Channel not supported please provide [ZWL_CASH,ZWL_MOBILE,ZWL_SWIPE]");
+
+        }
+        boolean checkBalance =  inSufficientFundsCheck(usdTransactionRequestDto.getAmountPaid(),usdTransactionRequestDto, "ZWL", rate);
+        if(!checkBalance){
+            throw new UnexpectedErrorException("Insufficient Funds to process this transaction","Insufficient Funds to process this transaction");
+        }
+
+        double change = usdTransactionRequestDto.getAmountPaid() - totalTransactionAmount;
+        long reference = generateReference();
+
+        Invoice invoice = new Invoice();
+        invoice.setEmployeeId(employee.getId());
+        invoice.setReference(reference);
+        invoice.setCurrency("USD");
+        invoice.setVat(0.0);
+        invoice.setPayable(totalTransactionAmount);
+        invoice.setPaid(usdTransactionRequestDto.getAmountPaid());
+        invoice.setReturned(change);
+        invoice.setDiscount(0.0);
+        invoice.setTotal(totalTransactionAmount);
+        invoiceRepo.save(invoice);
+
+        for (var product : productList) {
+            var productItem = productRepo.findById(product.getProductId());
+            int quantityBalance = productItem.getQuantity() - product.getQuantity();
+            productItem.setQuantity(quantityBalance);
+            productRepo.save(productItem);
+
+            Sale sale = new Sale();
+            sale.setInvoiceId(invoice.getId());
+            sale.setProductId(product.getProductId());
+            sale.setQuantity(product.getQuantity());
+            sale.setPrice(productItem.getPrice() * rate);
+            sale.setReference(String.valueOf(reference));
+            sale.setChannel(channel);
+            sale.setBaseCurrency("ZWL");
+            sale.setCostPrice(productItem.getCost());
+            sale.setPrice(productItem.getPrice() * rate);
+            sale.setEmployeeId(employee.getId());
+            sale.setForeignCurrency("ZWL");
+            sale.setShopName("Arms");
+            sale.setTotal(productItem.getPrice() * product.getQuantity());
+            saleRepo.save(sale);
+        }
+
+        TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
+        transactionResponseDto.setStatus(200);
+        transactionResponseDto.setMessage("Transaction successfully processed");
+        transactionResponseDto.setAmountTendered(usdTransactionRequestDto.getAmountPaid());
+        transactionResponseDto.setReference(reference);
+        transactionResponseDto.setChange(change);
+        transactionResponseDto.setEmployee(employee);
+        return transactionResponseDto;
+    }
+
+
+    public boolean inSufficientFundsCheck(double amountPaid, UsdTransactionRequestDto usdTransactionRequestDto, String currency, double rate){
         if("USD".equals(currency)) {
             var productList = usdTransactionRequestDto.getItems();
             double totalAmountToBePaid = 0;
@@ -105,8 +170,6 @@ public class TransactionServiceImpl implements TransactionService {
             return !(amountPaid < totalAmountToBePaid);
         }
 
-
-        double rate = rateRepo.findByBaseCurrency("ZWL").getRate();
         var productList = usdTransactionRequestDto.getItems();
         double totalAmountToBePaid = 0;
         for (var product : productList) {
