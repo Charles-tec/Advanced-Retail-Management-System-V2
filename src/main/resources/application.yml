@@ -3,7 +3,7 @@ spring:
     name: arcs
 
   profiles:
-    active: dev
+    active: prod
 server:
   servlet:
     context-path: /arcs

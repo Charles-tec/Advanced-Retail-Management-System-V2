@@ -26,14 +26,9 @@ public class TransactionController {
     return ResponseEntity.ok(transactionsService.processUsdTransaction(usdTransactionRequestDto));
   }
 
-  @Operation(summary = "Process USD Transaction", description = "", tags = "process-transaction")
+  @Operation(summary = "Process Z WL Transaction", description = "", tags = "process-transaction")
   @PostMapping(path = "/{channel}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
   public ResponseEntity<TransactionResponseDto> processZwlTransaction(@PathVariable String channel, @RequestBody UsdTransactionRequestDto usdTransactionRequestDto) {
     return ResponseEntity.ok(transactionsService.processZwlTransaction(channel,usdTransactionRequestDto));
   }
-
-
-
-
-
 }

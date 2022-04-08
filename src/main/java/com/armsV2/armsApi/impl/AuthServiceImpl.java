@@ -10,6 +10,7 @@ import com.armsV2.armsApi.services.AuthService;
 import io.micrometer.core.instrument.util.StringUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,12 @@ public class AuthServiceImpl implements AuthService {
 
         var employee = employeeRepository.findByUsername(username);
         if(employee == null) {
+
             throw new InvalidLoginException("Invalid username or password", "Invalid username or password");
         }
         boolean isPasswordMatches = passwordEncoder.matches(password, employee.getPassword());
         if(!isPasswordMatches) {
-            throw new InvalidLoginException("Invalid username or password", "Invalid username or password");
+           throw new InvalidLoginException("Invalid username or password", "Invalid username or password");
         }
 
         if(employee.isLogged()){

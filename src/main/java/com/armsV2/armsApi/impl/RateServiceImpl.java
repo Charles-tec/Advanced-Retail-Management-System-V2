@@ -8,6 +8,7 @@ import com.armsV2.armsApi.repositories.RateRepo;
 import com.armsV2.armsApi.services.RateService;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;

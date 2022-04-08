@@ -1,0 +1,47 @@
+server:
+  port : 9006
+
+spring:
+  #Flames DataSource
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: "jdbc:mysql://207.180.226.46:3306/arms?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Africa/Harare"
+    username: 'developer'
+    password: 'ch@ng3itDev'
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    database: MYSQL
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL55Dialect
+        enable_lazy_load_no_trans: true
+  application:
+    name: arcs
+
+
+
+
+  #profiles:
+  #active: dev
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
+springdoc:
+  api-docs:
+    path: /api-docs

@@ -9,6 +9,7 @@ import com.armsV2.armsApi.models.Sale;
 import com.armsV2.armsApi.repositories.*;
 import com.armsV2.armsApi.services.TransactionService;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -103,7 +104,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new UnexpectedErrorException("Channel not supported please provide [ZWL_CASH,ZWL_MOBILE,ZWL_SWIPE] ","Channel not supported please provide [ZWL_CASH,ZWL_MOBILE,ZWL_SWIPE]");
 
         }
-        boolean checkBalance =  inSufficientFundsCheck(usdTransactionRequestDto.getAmountPaid(),usdTransactionRequestDto, "ZWL", rate);
+       boolean checkBalance =  inSufficientFundsCheck(usdTransactionRequestDto.getAmountPaid(),usdTransactionRequestDto, "ZWL", rate);
         if(!checkBalance){
             throw new UnexpectedErrorException("Insufficient Funds to process this transaction","Insufficient Funds to process this transaction");
         }
@@ -147,7 +148,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
-        transactionResponseDto.setStatus(200);
+        transactionResponseDto.setStatus(201);
         transactionResponseDto.setMessage("Transaction successfully processed");
         transactionResponseDto.setAmountTendered(usdTransactionRequestDto.getAmountPaid());
         transactionResponseDto.setReference(reference);

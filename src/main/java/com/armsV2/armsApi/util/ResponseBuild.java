@@ -1,6 +1,7 @@
 package com.armsV2.armsApi.util;
 
 
+import lombok.var;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
