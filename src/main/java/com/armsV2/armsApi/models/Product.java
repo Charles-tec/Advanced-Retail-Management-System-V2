@@ -37,7 +37,6 @@ public class Product {
     @JsonIgnore
     private double cost;
 
-    @JsonIgnore
     private int quantity;
 
 
