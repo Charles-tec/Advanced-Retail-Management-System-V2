@@ -1,8 +1,11 @@
 package com.armsV2.armsApi.models;
 
+import com.armsV2.armsApi.Enums.EmployeeTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,6 +13,8 @@ import javax.persistence.*;
 
 @RequiredArgsConstructor
 @Data
+@Getter
+@Setter
 @Entity
 @Table(name = "employees", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"userName"}),
@@ -43,7 +48,7 @@ public class Employee {
     private String address;
 
     @JsonIgnore
-    private Enum type;
+    private EmployeeTypeEnum type;
 
     @JsonIgnore
     @Column(name = "supervisorcode")
@@ -51,11 +56,11 @@ public class Employee {
 
     @JsonIgnore
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     @JsonIgnore
     @Column(name = "islogged")
-    private boolean isLogged;
+    private Boolean isLogged;
 
 
 }

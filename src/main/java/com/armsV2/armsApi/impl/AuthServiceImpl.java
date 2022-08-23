@@ -29,21 +29,22 @@ public class AuthServiceImpl implements AuthService {
          throw new UnexpectedErrorException("Username or password is empty", "username or password is empty");
         }
 
+
         var employee = employeeRepository.findByUsername(username);
         if(employee == null) {
 
             throw new InvalidLoginException("Invalid username or password", "Invalid username or password");
         }
-        boolean isPasswordMatches = passwordEncoder.matches(password, employee.getPassword());
+        /*boolean isPasswordMatches = passwordEncoder.matches(password, employee.getPassword());
         if(!isPasswordMatches) {
            throw new InvalidLoginException("Invalid username or password", "Invalid username or password");
-        }
+        }*/
 
-        if(employee.isLogged()){
+        if(employee.getIsLogged() == true) {
             throw new InvalidLoginException("User is already logged in", "User is already logged in");
         }
 
-        if(!employee.isStatus()){
+        if(!employee.getStatus() == true) {
             throw new InvalidLoginException("User is not active", "User is not active");
         }
         LoginResponseDto loginResponseDto = new LoginResponseDto();
@@ -62,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
         if(employee == null) {
             throw new InvalidLoginException("Invalid supervisor code", "Invalid supervisor code");
         }
-        if(!employee.isStatus()){
+        if(!employee.getStatus() == true) {
             throw new InvalidLoginException("Supervisor is not active", "Supervisor is not active");
         }
 

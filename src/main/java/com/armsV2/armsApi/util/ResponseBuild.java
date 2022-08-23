@@ -11,6 +11,9 @@ import java.util.function.Function;
 
 @Component
 public class ResponseBuild<T> {
+
+
+
     public BiFunction<T, List<T>, Response> successResponse = (obj, objList) -> {
         var response = new Response();
         response.setData(obj);
